@@ -3,6 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 import { authClient } from '~/lib/auth-client';
 import { Button } from '~/components/ui/button';
+import { GameLogo } from '~/components/GameLogo';
 import {
   Card,
   CardContent,
@@ -54,6 +55,7 @@ function ForgotPasswordPage() {
       <div className='flex min-h-svh items-center justify-center p-4'>
         <Card className='w-full max-w-sm rounded-xl border-none bg-[#bbada0] text-[#776e65] shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
           <CardHeader>
+            <GameLogo className='mb-2' />
             <CardTitle className='font-heading text-4xl font-bold text-[#776e65]'>Password reset</CardTitle>
             <CardDescription className='text-[#eee4da]'>
               Your password has been updated. You can now sign in.
@@ -73,6 +75,7 @@ function ForgotPasswordPage() {
       <div className='flex min-h-svh items-center justify-center bg-[#faf8ef] p-4 dark:bg-[#1b1917]'>
         <Card className='w-full max-w-sm rounded-xl border-none bg-[#bbada0] text-[#776e65] shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
           <CardHeader>
+            <GameLogo className='mb-2' />
             <CardTitle className='font-heading text-4xl font-bold text-[#776e65]'>Reset your password</CardTitle>
             <CardDescription className='text-[#eee4da]'>
               We’ll send a six-digit reset code to your email.

@@ -8,6 +8,7 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { authClient } from '~/lib/auth-client';
 import { Button } from '~/components/ui/button';
+import { GameLogo } from '~/components/GameLogo';
 import {
   Card,
   CardContent,
@@ -58,6 +59,7 @@ function EmailOtpPage() {
     <div className='flex min-h-svh items-center justify-center bg-[#faf8ef] p-4 dark:bg-[#1b1917]'>
       <Card className='w-full max-w-sm rounded-xl border-none bg-[#bbada0] text-[#776e65] shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
         <CardHeader>
+          <GameLogo className='mb-2' />
           <CardTitle className='font-heading text-4xl font-bold text-[#776e65]'>Check your email</CardTitle>
           <CardDescription className='text-[#eee4da]'>
             Enter the six-digit code we sent to {email}.

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type * as React from 'react';
 import { Link } from '@tanstack/react-router';
 import { Button } from '~/components/ui/button';
+import { GameLogo } from '~/components/GameLogo';
 import { getAuthSession } from '~/lib/auth.functions';
 import { submitGameScore } from '~/lib/scores.functions';
 import { cn } from '~/lib/utils';
@@ -485,15 +486,15 @@ export function Game2048() {
   }));
 
   return (
-    <div className='w-full max-w-[500px]'>
-      <div className='flex items-end justify-between gap-4'>
+    <div className='mx-auto w-full max-w-[500px]'>
+      <div className='flex items-start justify-between gap-4'>
         <div>
-          <h1 className='font-heading text-6xl font-bold text-[#776e65] dark:text-[#eee4da]'>2048</h1>
+          <GameLogo />
           <p className='mt-1 max-w-[28ch] text-sm text-[#8f857c] dark:text-[#a79d92]'>
             Join tiles, reach 2048.
           </p>
         </div>
-        <div className='flex gap-2'>
+          <div className='flex gap-2'>
           <Stat label='Score' value={score} />
           <Stat label='Best' value={best} />
         </div>
@@ -531,7 +532,7 @@ export function Game2048() {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         className={cn(
-          'relative mt-4 touch-pan-y select-none rounded-xl bg-[#bbada0] p-3 shadow-[0_12px_35px_rgba(0,0,0,0.16)]',
+          'relative mx-auto mt-4 touch-pan-y select-none rounded-xl bg-[#bbada0] p-3 shadow-[0_12px_35px_rgba(0,0,0,0.16)]',
           shake && 'animate-board-shake',
         )}
         style={{
@@ -604,11 +605,11 @@ export function Game2048() {
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className='min-w-[84px] rounded-lg bg-[#bbada0] px-4 py-2 text-center'>
-      <div className='text-[11px] font-bold tracking-[0.08em] text-[#eee4da] uppercase'>
+    <div className='min-w-[84px] rounded-lg border-2 border-[#bbada0] bg-transparent px-4 py-2 text-center'>
+      <div className='text-[11px] font-bold tracking-[0.08em] text-[#8f857c] uppercase'>
         {label}
       </div>
-      <div className='text-2xl font-bold text-white tabular-nums'>{value}</div>
+      <div className='text-2xl font-bold text-[#776e65] tabular-nums'>{value}</div>
     </div>
   );
 }

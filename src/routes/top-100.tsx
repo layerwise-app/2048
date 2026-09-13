@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { Button } from '~/components/ui/button';
+import { GameLogo } from '~/components/GameLogo';
 import { getAuthSession } from '~/lib/auth.functions';
 import { cn } from '~/lib/utils';
 import { getTopScores } from '~/lib/scores.functions';
@@ -37,6 +38,7 @@ function Top100Page() {
       <div className='w-full max-w-[500px]'>
         <div className='flex items-end justify-between gap-4'>
           <div>
+            <GameLogo />
             <h1 className='font-heading text-6xl font-bold text-[#776e65] dark:text-[#eee4da]'>
               Top 100
             </h1>

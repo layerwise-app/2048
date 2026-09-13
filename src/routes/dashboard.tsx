@@ -1,8 +1,10 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import { createFileRoute, Link, redirect, useNavigate } from '@tanstack/react-router';
 import { Button } from '~/components/ui/button';
+import { GameLogo } from '~/components/GameLogo';
 import { UserProfileDialog } from '~/components/UserProfileDialog';
 import { getAuthSession } from '~/lib/auth.functions';
 import { getUserScores } from '~/lib/scores.functions';
+import { authClient, signOut } from '~/lib/auth-client';
 import { seo } from '~/utils/seo';
 
 const historyFormatter = new Intl.DateTimeFormat('en-US', {
@@ -46,6 +48,7 @@ export const Route = createFileRoute('/dashboard')({
 });
 
 function DashboardPage() {
+  const navigate = useNavigate();
   const { user } = Route.useRouteContext();
   const { scores } = Route.useLoaderData();
   const createdAt = registeredFormatter.format(new Date(user.createdAt));
@@ -56,9 +59,7 @@ function DashboardPage() {
       <div className='w-full max-w-[500px]'>
         <div className='flex items-end justify-between gap-4'>
           <div>
-            <h1 className='font-heading text-6xl font-bold text-[#776e65] dark:text-[#eee4da]'>
-              Account
-            </h1>
+            <GameLogo />
             <p className='mt-1 max-w-[28ch] text-sm text-[#8f857c] dark:text-[#a79d92]'>
               Your games and score history.
             </p>
@@ -66,37 +67,6 @@ function DashboardPage() {
           <Button asChild className='rounded-lg bg-[#8f7a66] text-white hover:bg-[#7d6a58]'>
             <Link to='/'>Back to game</Link>
           </Button>
-        </div>
-
-        <div className='mt-5 rounded-xl bg-[#bbada0] p-3 shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
-          <div className='flex items-start justify-between gap-4 px-1'>
-            <div>
-              <h2 className='font-heading text-2xl font-bold text-[#776e65]'>
-                {user.name || 'Player'}
-              </h2>
-              <p className='text-sm font-medium text-[#eee4da]'>{user.email}</p>
-            </div>
-            <UserProfileDialog
-              user={user}
-              trigger={
-                <Button className='rounded-lg bg-[#edc22e] text-white hover:bg-[#e2b32a]'>
-                  Edit name
-                </Button>
-              }
-            />
-          </div>
-          <div className='mt-3 flex gap-2 px-1 pb-1'>
-            <div className='flex-1 rounded-md bg-[rgba(238,228,218,0.35)] px-3 py-2'>
-              <p className='text-[11px] font-bold text-[#776e65] uppercase'>Registered</p>
-              <p className='text-sm font-bold text-[#776e65]'>{createdAt}</p>
-            </div>
-            <div className='flex-1 rounded-md bg-[rgba(238,228,218,0.35)] px-3 py-2'>
-              <p className='text-[11px] font-bold text-[#776e65] uppercase'>Verified</p>
-              <p className='text-sm font-bold text-[#776e65]'>
-                {user.emailVerified ? 'Yes' : 'No'}
-              </p>
-            </div>
-          </div>
         </div>
 
         <div className='mt-5 flex gap-2'>
@@ -133,9 +103,53 @@ function DashboardPage() {
           )}
         </div>
 
-        <p className='mt-5 text-center text-sm text-[#8f857c] dark:text-[#a79d92]'>
+        <p className='mt-2 px-1 text-sm text-[#8f857c] dark:text-[#a79d92]'>
           Rank is your best placement across all players.
         </p>
+
+        <div className='mt-10 rounded-xl bg-[#bbada0] p-3 shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
+          <div className='flex items-start justify-between gap-4 px-1'>
+            <div>
+              <h2 className='font-heading text-2xl font-bold text-[#776e65]'>
+                {user.name || 'Player'}
+              </h2>
+              <p className='text-sm font-medium text-[#eee4da]'>{user.email}</p>
+            </div>
+            <UserProfileDialog
+              user={user}
+              trigger={
+                <Button className='rounded-lg bg-[#edc22e] text-white hover:bg-[#e2b32a]'>
+                  Edit name
+                </Button>
+              }
+            />
+          </div>
+          <div className='mt-3 flex gap-2 px-1 pb-1'>
+            <div className='flex-1 rounded-md bg-[rgba(238,228,218,0.35)] px-3 py-2'>
+              <p className='text-[11px] font-bold text-[#776e65] uppercase'>Registered</p>
+              <p className='text-sm font-bold text-[#776e65]'>{createdAt}</p>
+            </div>
+            <div className='flex-1 rounded-md bg-[rgba(238,228,218,0.35)] px-3 py-2'>
+              <p className='text-[11px] font-bold text-[#776e65] uppercase'>Verified</p>
+              <p className='text-sm font-bold text-[#776e65]'>
+                {user.emailVerified ? 'Yes' : 'No'}
+              </p>
+            </div>
+          </div>
+
+          <div className='mt-3 flex justify-end px-1 pb-1'>
+            <Button
+              onClick={async () => {
+                await signOut();
+                await navigate({ to: '/sign-in' });
+              }}
+              className='rounded-lg bg-[#a59a8d] text-white hover:bg-[#968b7e]'
+            >
+              Log out
+            </Button>
+          </div>
+        </div>
+
       </div>
     </div>
   );
