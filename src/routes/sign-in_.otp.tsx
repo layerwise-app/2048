@@ -55,11 +55,11 @@ function EmailOtpPage() {
   });
 
   return (
-    <div className='flex min-h-svh items-center justify-center p-4'>
-      <Card className='w-full max-w-sm'>
+    <div className='flex min-h-svh items-center justify-center bg-[#faf8ef] p-4 dark:bg-[#1b1917]'>
+      <Card className='w-full max-w-sm rounded-xl border-none bg-[#bbada0] text-[#776e65] shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
         <CardHeader>
-          <CardTitle>Check your email</CardTitle>
-          <CardDescription>
+          <CardTitle className='font-heading text-4xl font-bold text-[#776e65]'>Check your email</CardTitle>
+          <CardDescription className='text-[#eee4da]'>
             Enter the six-digit code we sent to {email}.
           </CardDescription>
         </CardHeader>
@@ -96,6 +96,7 @@ function EmailOtpPage() {
             <Button
               type='submit'
               disabled={otp.length < 6 || verifyOtp.isPending}
+              className='rounded-lg bg-[#8f7a66] text-white hover:bg-[#7d6a58]'
             >
               {verifyOtp.isPending ? 'Verifying…' : 'Verify and sign in'}
             </Button>
@@ -104,7 +105,7 @@ function EmailOtpPage() {
             <Button
               type='button'
               variant='link'
-              className='h-auto p-0'
+              className='h-auto p-0 text-[#eee4da] hover:text-[#776e65]'
               disabled={resendOtp.isPending}
               onClick={() => resendOtp.mutate()}
             >
@@ -119,7 +120,7 @@ function EmailOtpPage() {
                 {resendOtp.error.message}
               </p>
             ) : null}
-            <Link to='/sign-in' className='text-muted-foreground underline'>
+            <Link to='/sign-in' className='text-[#eee4da] underline'>
               Use a different email
             </Link>
           </div>

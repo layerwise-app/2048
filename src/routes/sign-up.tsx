@@ -38,11 +38,11 @@ function SignUpPage() {
   });
 
   return (
-    <div className='flex min-h-svh items-center justify-center p-4'>
-      <Card className='w-full max-w-sm'>
+    <div className='flex min-h-svh items-center justify-center bg-[#faf8ef] p-4 dark:bg-[#1b1917]'>
+      <Card className='w-full max-w-sm rounded-xl border-none bg-[#bbada0] text-[#776e65] shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
         <CardHeader>
-          <CardTitle>Create an account</CardTitle>
-          <CardDescription>
+          <CardTitle className='font-heading text-4xl font-bold text-[#776e65]'>Create an account</CardTitle>
+          <CardDescription className='text-[#eee4da]'>
             Sign up with your email and password.
           </CardDescription>
         </CardHeader>
@@ -112,10 +112,11 @@ function SignUpPage() {
             <Button
               type='submit'
               disabled={!passwordsMatch || signUp.isPending}
+              className='rounded-lg bg-[#8f7a66] text-white hover:bg-[#7d6a58]'
             >
               {signUp.isPending ? 'Creating account…' : 'Create account'}
             </Button>
-            <p className='text-center text-sm text-muted-foreground'>
+            <p className='text-center text-sm text-[#eee4da]'>
               Already have an account?{' '}
               <Link to='/sign-in' className='underline'>
                 Sign in

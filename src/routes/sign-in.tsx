@@ -54,11 +54,11 @@ function SignInPage() {
   });
 
   return (
-    <div className='flex min-h-svh items-center justify-center p-4'>
-      <Card className='w-full max-w-sm'>
+    <div className='flex min-h-svh items-center justify-center bg-[#faf8ef] p-4 dark:bg-[#1b1917]'>
+      <Card className='w-full max-w-sm rounded-xl border-none bg-[#bbada0] text-[#776e65] shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
         <CardHeader>
-          <CardTitle>Sign in</CardTitle>
-          <CardDescription>
+          <CardTitle className='font-heading text-4xl font-bold text-[#776e65]'>Sign in</CardTitle>
+          <CardDescription className='text-[#eee4da]'>
             Enter your email and we’ll send you a one-time sign-in code.
           </CardDescription>
         </CardHeader>
@@ -92,7 +92,7 @@ function SignInPage() {
                 {sendOtp.error.message}
               </p>
             ) : null}
-            <Button type='submit' disabled={sendOtp.isPending}>
+            <Button type='submit' disabled={sendOtp.isPending} className='rounded-lg bg-[#8f7a66] text-white hover:bg-[#7d6a58]'>
               {sendOtp.isPending ? 'Sending code…' : 'Continue with email'}
             </Button>
           </form>
@@ -103,7 +103,7 @@ function SignInPage() {
           </div>
           <Collapsible>
             <CollapsibleTrigger asChild>
-              <Button variant='ghost' className='group w-full'>
+            <Button variant='ghost' className='group w-full text-[#776e65] hover:bg-[rgba(238,228,218,0.45)] hover:text-[#776e65]'>
                 Sign in with password
                 <ChevronDownIcon className='size-4 transition-transform group-data-[state=open]:rotate-180' />
               </Button>
@@ -157,7 +157,7 @@ function SignInPage() {
                     {signInWithPassword.error.message}
                   </p>
                 ) : null}
-                <Button type='submit' disabled={signInWithPassword.isPending}>
+                <Button type='submit' disabled={signInWithPassword.isPending} className='rounded-lg bg-[#8f7a66] text-white hover:bg-[#7d6a58]'>
                   {signInWithPassword.isPending
                     ? 'Signing in…'
                     : 'Sign in with password'}
@@ -165,7 +165,7 @@ function SignInPage() {
               </form>
             </CollapsibleContent>
           </Collapsible>
-          <p className='text-center text-sm text-muted-foreground'>
+          <p className='text-center text-sm text-[#eee4da]'>
             Don’t have an account?{' '}
             <Link to='/sign-up' className='underline'>
               Sign up

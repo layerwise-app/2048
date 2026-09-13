@@ -52,15 +52,15 @@ function ForgotPasswordPage() {
   if (resetPassword.isSuccess) {
     return (
       <div className='flex min-h-svh items-center justify-center p-4'>
-        <Card className='w-full max-w-sm'>
+        <Card className='w-full max-w-sm rounded-xl border-none bg-[#bbada0] text-[#776e65] shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
           <CardHeader>
-            <CardTitle>Password reset</CardTitle>
-            <CardDescription>
+            <CardTitle className='font-heading text-4xl font-bold text-[#776e65]'>Password reset</CardTitle>
+            <CardDescription className='text-[#eee4da]'>
               Your password has been updated. You can now sign in.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className='w-full'>
+            <Button asChild className='w-full rounded-lg bg-[#8f7a66] text-white hover:bg-[#7d6a58]'>
               <Link to='/sign-in'>Back to sign in</Link>
             </Button>
           </CardContent>
@@ -70,14 +70,14 @@ function ForgotPasswordPage() {
   }
 
   return (
-    <div className='flex min-h-svh items-center justify-center p-4'>
-      <Card className='w-full max-w-sm'>
-        <CardHeader>
-          <CardTitle>Reset your password</CardTitle>
-          <CardDescription>
-            We’ll send a six-digit reset code to your email.
-          </CardDescription>
-        </CardHeader>
+      <div className='flex min-h-svh items-center justify-center bg-[#faf8ef] p-4 dark:bg-[#1b1917]'>
+        <Card className='w-full max-w-sm rounded-xl border-none bg-[#bbada0] text-[#776e65] shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
+          <CardHeader>
+            <CardTitle className='font-heading text-4xl font-bold text-[#776e65]'>Reset your password</CardTitle>
+            <CardDescription className='text-[#eee4da]'>
+              We’ll send a six-digit reset code to your email.
+            </CardDescription>
+          </CardHeader>
         <CardContent className='flex flex-col gap-4'>
           <form
             className='flex flex-col gap-4'
@@ -104,7 +104,7 @@ function ForgotPasswordPage() {
                     resetPassword.reset();
                   }}
                 />
-                <Button type='submit' disabled={requestReset.isPending}>
+                <Button type='submit' disabled={requestReset.isPending} className='rounded-lg bg-[#8f7a66] text-white hover:bg-[#7d6a58]'>
                   {requestReset.isPending
                     ? 'Sending…'
                     : requestReset.isSuccess
@@ -128,7 +128,7 @@ function ForgotPasswordPage() {
                 resetPassword.mutate();
               }}
             >
-              <p className='text-sm text-muted-foreground'>
+                <p className='text-sm text-[#eee4da]'>
                 Enter the code sent to {email} and choose a new password.
               </p>
               <InputOTP
@@ -188,15 +188,14 @@ function ForgotPasswordPage() {
               ) : null}
               <Button
                 type='submit'
-                disabled={
-                  otp.length < 6 || !passwordsMatch || resetPassword.isPending
-                }
+                disabled={otp.length < 6 || !passwordsMatch || resetPassword.isPending}
+                className='rounded-lg bg-[#8f7a66] text-white hover:bg-[#7d6a58]'
               >
                 {resetPassword.isPending ? 'Resetting…' : 'Reset password'}
               </Button>
             </form>
           ) : null}
-          <Button variant='link' asChild className='h-auto p-0'>
+          <Button variant='link' asChild className='h-auto p-0 text-[#eee4da] hover:text-[#776e65]'>
             <Link to='/sign-in'>Back to sign in</Link>
           </Button>
         </CardContent>
