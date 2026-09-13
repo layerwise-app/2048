@@ -73,6 +73,7 @@ export const getUserScores = createServerFn({ method: 'GET' }).handler(
         id: gameScores.id,
         score: gameScores.score,
         createdAt: gameScores.createdAt,
+        rank: sql<number>`row_number() over (order by ${gameScores.score} desc)`,
       })
       .from(gameScores)
       .where(eq(gameScores.userId, session.user.id))

@@ -5,14 +5,20 @@ import { getAuthSession } from '~/lib/auth.functions';
 import { getUserScores } from '~/lib/scores.functions';
 import { seo } from '~/utils/seo';
 
-const createdAtFormatter = new Intl.DateTimeFormat('en-US', {
-  year: 'numeric',
-  month: 'long',
+const historyFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
   day: 'numeric',
   hour: 'numeric',
   minute: '2-digit',
-  timeZone: 'UTC',
-  timeZoneName: 'short'
+  hour12: false,
+  timeZone: 'UTC'
+});
+
+const registeredFormatter = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+  timeZone: 'UTC'
 });
 
 export const Route = createFileRoute('/dashboard')({
@@ -42,7 +48,7 @@ export const Route = createFileRoute('/dashboard')({
 function DashboardPage() {
   const { user } = Route.useRouteContext();
   const { scores } = Route.useLoaderData();
-  const createdAt = createdAtFormatter.format(new Date(user.createdAt));
+  const createdAt = registeredFormatter.format(new Date(user.createdAt));
   const bestScore = Math.max(0, ...scores.map((entry) => entry.score));
 
   return (
@@ -62,7 +68,36 @@ function DashboardPage() {
           </Button>
         </div>
 
-        <UserProfileDialog user={user} />
+        <div className='mt-5 rounded-xl bg-[#bbada0] p-3 shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
+          <div className='flex items-start justify-between gap-4 px-1'>
+            <div>
+              <h2 className='font-heading text-2xl font-bold text-[#776e65]'>
+                {user.name || 'Player'}
+              </h2>
+              <p className='text-sm font-medium text-[#eee4da]'>{user.email}</p>
+            </div>
+            <UserProfileDialog
+              user={user}
+              trigger={
+                <Button className='rounded-lg bg-[#edc22e] text-white hover:bg-[#e2b32a]'>
+                  Edit name
+                </Button>
+              }
+            />
+          </div>
+          <div className='mt-3 flex gap-2 px-1 pb-1'>
+            <div className='flex-1 rounded-md bg-[rgba(238,228,218,0.35)] px-3 py-2'>
+              <p className='text-[11px] font-bold text-[#776e65] uppercase'>Registered</p>
+              <p className='text-sm font-bold text-[#776e65]'>{createdAt}</p>
+            </div>
+            <div className='flex-1 rounded-md bg-[rgba(238,228,218,0.35)] px-3 py-2'>
+              <p className='text-[11px] font-bold text-[#776e65] uppercase'>Verified</p>
+              <p className='text-sm font-bold text-[#776e65]'>
+                {user.emailVerified ? 'Yes' : 'No'}
+              </p>
+            </div>
+          </div>
+        </div>
 
         <div className='mt-5 flex gap-2'>
           <Stat label='Best score' value={bestScore} />
@@ -76,16 +111,21 @@ function DashboardPage() {
             </p>
           ) : (
             <ol className='space-y-2'>
-              {scores.map((entry) => (
+              {scores.map((entry, index) => (
                 <li
                   key={entry.id}
-                  className='flex items-center justify-between gap-4 rounded-md bg-[rgba(238,228,218,0.35)] px-3 py-2'
+                  className='flex items-center justify-between gap-3 rounded-md bg-[rgba(238,228,218,0.35)] px-3 py-2'
                 >
-                  <span className='text-sm font-bold text-[#776e65]'>
-                    {createdAtFormatter.format(new Date(entry.createdAt))}
-                  </span>
+                  <div className='flex min-w-0 items-center gap-3'>
+                    <span className='w-7 text-sm font-bold text-[#776e65] tabular-nums'>
+                      {scores.length - index}
+                    </span>
+                    <span className='text-sm font-bold text-[#776e65]'>
+                      {historyFormatter.format(new Date(entry.createdAt))}
+                    </span>
+                  </div>
                   <span className='font-bold text-[#776e65] tabular-nums'>
-                    {entry.score.toLocaleString()}
+                    #{entry.rank} · {entry.score.toLocaleString()}
                   </span>
                 </li>
               ))}
@@ -94,7 +134,7 @@ function DashboardPage() {
         </div>
 
         <p className='mt-5 text-center text-sm text-[#8f857c] dark:text-[#a79d92]'>
-          Signed in as {user.email}.
+          Rank is your best placement across all players.
         </p>
       </div>
     </div>

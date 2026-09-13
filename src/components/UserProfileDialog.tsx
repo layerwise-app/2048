@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type * as React from 'react';
 import { authClient } from '~/lib/auth-client';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -13,11 +14,13 @@ import {
 
 export function UserProfileDialog({
   user,
+  trigger,
 }: {
   user: {
     id: string;
     name: string;
   };
+  trigger: React.ReactNode;
 }) {
   const [open, setOpen] = useState(!user.name.trim());
   const [name, setName] = useState(user.name);
@@ -36,6 +39,7 @@ export function UserProfileDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
+      {trigger}
       <DialogContent
         showCloseButton={false}
         onEscapeKeyDown={(event) => event.preventDefault()}
