@@ -85,7 +85,10 @@ export const gameScores = sqliteTable('game_scores', {
     .notNull()
     .$defaultFn(() => new Date()),
 }, (table) => [
-  uniqueIndex('game_scores_user_id_unique').on(table.userId),
+  uniqueIndex('game_scores_user_id_created_at_unique').on(
+    table.userId,
+    table.createdAt,
+  ),
 ]);
 
 // Define your own tables below, then run `pnpm run db:generate` to create a

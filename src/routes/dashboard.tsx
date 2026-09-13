@@ -1,14 +1,8 @@
 import { createFileRoute, Link, redirect } from '@tanstack/react-router';
-import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '~/components/ui/card';
+import { UserProfileDialog } from '~/components/UserProfileDialog';
 import { getAuthSession } from '~/lib/auth.functions';
+import { getUserScores } from '~/lib/scores.functions';
 import { seo } from '~/utils/seo';
 
 const createdAtFormatter = new Intl.DateTimeFormat('en-US', {
@@ -30,6 +24,10 @@ export const Route = createFileRoute('/dashboard')({
 
     return { user: session.user };
   },
+  loader: async () => {
+    const scores = await getUserScores();
+    return { scores };
+  },
   head: () => ({
     meta: [
       ...seo({
@@ -43,58 +41,73 @@ export const Route = createFileRoute('/dashboard')({
 
 function DashboardPage() {
   const { user } = Route.useRouteContext();
+  const { scores } = Route.useLoaderData();
   const createdAt = createdAtFormatter.format(new Date(user.createdAt));
+  const bestScore = Math.max(0, ...scores.map((entry) => entry.score));
 
   return (
-    <div className='min-h-[100dvh] bg-muted/30'>
-      <header className='border-b bg-background'>
-        <div className='container mx-auto flex h-16 items-center justify-between px-6 sm:px-8'>
-          <Link to='/' className='font-semibold tracking-tight'>
-            My App
-          </Link>
-          <Button variant='outline' asChild>
-            <Link to='/'>Back home</Link>
+    <div className='flex min-h-dvh items-start justify-center bg-[#faf8ef] px-4 py-8 dark:bg-[#1b1917] sm:items-center'>
+      <div className='w-full max-w-[500px]'>
+        <div className='flex items-end justify-between gap-4'>
+          <div>
+            <h1 className='font-heading text-6xl font-bold text-[#776e65] dark:text-[#eee4da]'>
+              Account
+            </h1>
+            <p className='mt-1 max-w-[28ch] text-sm text-[#8f857c] dark:text-[#a79d92]'>
+              Your games and score history.
+            </p>
+          </div>
+          <Button asChild className='rounded-lg bg-[#8f7a66] text-white hover:bg-[#7d6a58]'>
+            <Link to='/'>Back to game</Link>
           </Button>
         </div>
-      </header>
 
-      <main className='container mx-auto max-w-3xl px-6 py-12 sm:px-8 sm:py-16'>
-        <div className='mb-8 space-y-2'>
-          <h1 className='text-3xl font-semibold tracking-tight'>
-            Your account
-          </h1>
-          <p className='text-muted-foreground'>
-            The profile connected to your current session.
-          </p>
+        <UserProfileDialog user={user} />
+
+        <div className='mt-5 flex gap-2'>
+          <Stat label='Best score' value={bestScore} />
+          <Stat label='Games' value={scores.length} />
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{user.name}</CardTitle>
-            <CardDescription>Account information</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <dl className='grid gap-6 sm:grid-cols-2'>
-              <div className='space-y-1'>
-                <dt className='text-sm text-muted-foreground'>Email</dt>
-                <dd className='font-medium break-all'>{user.email}</dd>
-              </div>
-              <div className='space-y-1'>
-                <dt className='text-sm text-muted-foreground'>Email status</dt>
-                <dd>
-                  <Badge variant={user.emailVerified ? 'secondary' : 'outline'}>
-                    {user.emailVerified ? 'Verified' : 'Not verified'}
-                  </Badge>
-                </dd>
-              </div>
-              <div className='space-y-1 sm:col-span-2'>
-                <dt className='text-sm text-muted-foreground'>Registered</dt>
-                <dd className='font-medium'>{createdAt}</dd>
-              </div>
-            </dl>
-          </CardContent>
-        </Card>
-      </main>
+        <div className='mt-4 rounded-xl bg-[#bbada0] p-3 shadow-[0_12px_35px_rgba(0,0,0,0.16)]'>
+          {scores.length === 0 ? (
+            <p className='px-3 py-8 text-center text-sm font-medium text-[#eee4da]'>
+              No submitted scores yet.
+            </p>
+          ) : (
+            <ol className='space-y-2'>
+              {scores.map((entry) => (
+                <li
+                  key={entry.id}
+                  className='flex items-center justify-between gap-4 rounded-md bg-[rgba(238,228,218,0.35)] px-3 py-2'
+                >
+                  <span className='text-sm font-bold text-[#776e65]'>
+                    {createdAtFormatter.format(new Date(entry.createdAt))}
+                  </span>
+                  <span className='font-bold text-[#776e65] tabular-nums'>
+                    {entry.score.toLocaleString()}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+
+        <p className='mt-5 text-center text-sm text-[#8f857c] dark:text-[#a79d92]'>
+          Signed in as {user.email}.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className='min-w-[84px] flex-1 rounded-lg bg-[#bbada0] px-4 py-2 text-center'>
+      <div className='text-[11px] font-bold tracking-[0.08em] text-[#eee4da] uppercase'>
+        {label}
+      </div>
+      <div className='text-2xl font-bold text-white tabular-nums'>{value}</div>
     </div>
   );
 }

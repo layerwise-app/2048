@@ -30,20 +30,13 @@ export const submitGameScore = createServerFn({ method: 'POST' })
       return { saved: false };
     }
 
-    await db
-      .insert(gameScores)
-      .values({
-        userId: session.user.id,
-        score: data.score,
-        updatedAt: new Date(),
-      })
-      .onConflictDoUpdate({
-        target: gameScores.userId,
-        set: {
-          score: sql`max(${gameScores.score}, ${data.score})`,
-          updatedAt: new Date(),
-        },
-      });
+    const now = new Date();
+    await db.insert(gameScores).values({
+      userId: session.user.id,
+      score: data.score,
+      createdAt: now,
+      updatedAt: now,
+    });
 
     return { saved: true };
   });
@@ -63,5 +56,27 @@ export const getTopScores = createServerFn({ method: 'GET' }).handler(
       .innerJoin(user, eq(user.id, gameScores.userId))
       .orderBy(desc(gameScores.score))
       .limit(100);
+  },
+);
+
+export const getUserScores = createServerFn({ method: 'GET' }).handler(
+  async () => {
+    const session = await auth.api.getSession({
+      headers: getRequestHeaders(),
+    });
+    if (!session) {
+      return [];
+    }
+
+    return db
+      .select({
+        id: gameScores.id,
+        score: gameScores.score,
+        createdAt: gameScores.createdAt,
+      })
+      .from(gameScores)
+      .where(eq(gameScores.userId, session.user.id))
+      .orderBy(desc(gameScores.createdAt))
+      .limit(200);
   },
 );
