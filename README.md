@@ -54,8 +54,9 @@ Layerwise to make your own version.
   the favicons in `public/`. The app name for home screen installs is in
   `public/site.webmanifest`.
 - **Layerwise credit.** The "Make your own game with Layerwise" link is
-  `src/components/powered-by-layerwise.tsx`. It only appears in the corner of
-  the game-over screen.
+  `src/components/powered-by-layerwise.tsx`, placed in the bottom-right corner
+  of the home page by `src/routes/index.tsx`. It ignores swipes that end on it,
+  so a swipe that runs off the board can't open it.
 
 ## Scores and accounts
 
