@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>2048</title>
+  <defs>
+    <!-- "20" over "48", drawn as round-capped strokes so the mark needs no font. -->
+    <g id="digits" fill="none" stroke-width="76" stroke-linecap="round" stroke-linejoin="round">
+      <path transform="translate(214 144)" d="M0,112 C0,47 53,0 118,0 C183,0 236,47 236,112 C236,171 198,186 156,222 L0,300 H236"/>
+      <path transform="translate(574 144)" d="M118,0 C236,0 236,60 236,150 C236,240 236,300 118,300 C0,300 0,240 0,150 C0,60 0,0 118,0 Z"/>
+      <path transform="translate(214 580)" d="M175,300 V0 L0,207 H245"/>
+      <path transform="translate(574 580)" d="M118,0 a94,67.5 0 1 1 0,135 a94,67.5 0 1 1 0,-135 Z M118,135 a118,82.5 0 1 1 0,165 a118,82.5 0 1 1 0,-165 Z"/>
+    </g>
+  </defs>
+  <rect width="1024" height="1024" rx="216" fill="#edc22e"/>
+  <use href="#digits" y="22" stroke="#c79f1c"/>
+  <use href="#digits" stroke="#ffffff"/>
+</svg>

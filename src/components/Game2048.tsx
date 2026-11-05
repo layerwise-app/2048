@@ -3,6 +3,7 @@ import type * as React from 'react';
 import { Link } from '@tanstack/react-router';
 import { Button } from '~/components/ui/button';
 import { GameLogo } from '~/components/GameLogo';
+import { PoweredByLayerwise } from '~/components/powered-by-layerwise';
 import { getAuthSession } from '~/lib/auth.functions';
 import { submitGameScore } from '~/lib/scores.functions';
 import { cn } from '~/lib/utils';
@@ -582,7 +583,9 @@ export function Game2048() {
             onSubmitScore={submitFinalScore}
             action={reset}
             actionLabel='Try again'
-          />
+          >
+            <PoweredByLayerwise className='absolute top-3 right-3' />
+          </Overlay>
         )}
         {won && !gameOver && (
           <Overlay
@@ -621,6 +624,7 @@ function Overlay({
   onSubmitScore,
   action,
   actionLabel,
+  children,
 }: {
   title: string;
   score: number;
@@ -631,6 +635,7 @@ function Overlay({
   onSubmitScore: () => Promise<void>;
   action: () => void;
   actionLabel: string;
+  children?: React.ReactNode;
 }) {
   const [submitState, setSubmitState] = useState<
     'idle' | 'saving' | 'saved'
@@ -676,6 +681,7 @@ function Overlay({
       >
         {actionLabel}
       </Button>
+      {children}
     </div>
   );
 }
